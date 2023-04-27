@@ -6,10 +6,20 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabController: UITabBarController {
     
     //MARK: - Properties
+    
+    var user: User? {
+        didSet{
+            guard let nav = viewControllers?[0] as? UINavigationController else {return} //main
+            guard let feed = nav.viewControllers.first as? FeedController else {return}
+            feed.user = user
+        }
+    }
+    
     lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -23,9 +33,43 @@ class MainTabController: UITabBarController {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        configVC()
-        layout()
+        view.backgroundColor = .twitterBlue
+        
+        //logout()
+        authenticateUserAndConfigureUI()
+        
+    }
+    
+    //MARK: - API
+    
+    func authenticateUserAndConfigureUI(){
+        if Auth.auth().currentUser == nil{
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav,animated: true)
+            }
+        }
+        else{
+            configVC()
+            layout()
+            fetchUser()
+        }
+    }
+    
+    func fetchUser(){
+        UserService.shared.fetchUser { user in
+            self.user = user
+        }
+    }
+    
+    func logout(){
+        do{
+            try Auth.auth().signOut()
+        }
+        catch let error{
+            print("Debug -> \(error.localizedDescription)")
+        }
     }
     
     //MARK: - Functions

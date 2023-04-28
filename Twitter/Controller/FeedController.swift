@@ -8,12 +8,20 @@
 import UIKit
 import SDWebImage
 
-class FeedController: UIViewController{
+private let reuseIdentifier = "TweetCell"
+
+class FeedController: UICollectionViewController{
     
     //MARK: - Properties
     var user: User?{
         didSet{
             configureLeftBarButton()
+        }
+    }
+    
+    private var tweets = [Tweet]() {
+        didSet{
+            collectionView.reloadData()
         }
     }
     
@@ -28,7 +36,7 @@ class FeedController: UIViewController{
     //MARK: - API
     func fetchTweets(){
         TweetService.shared.fetchTweet { tweets in
-            
+            self.tweets = tweets
         }
     }
     
@@ -42,6 +50,8 @@ class FeedController: UIViewController{
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
         
+        collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.backgroundColor = .white
     }
     
     func configureLeftBarButton(){
@@ -51,10 +61,39 @@ class FeedController: UIViewController{
         profileImageView.setDimensions(width: 32, height: 32)
         profileImageView.layer.cornerRadius = 32/2
         profileImageView.layer.masksToBounds = true
-        profileImageView.sd_setImage(with: URL(string: user.profileImage), completed: nil)
+        profileImageView.sd_setImage(with: user.profileImageURL, completed: nil)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
         
     }
     
+}
+
+extension FeedController{
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tweets.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
+        cell.delegate = self
+        cell.tweet = tweets[indexPath.row]
+        
+        return cell
+    }
+}
+
+extension FeedController: UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    
+}
+
+extension FeedController: TweetCellDelegate{
+    func handleProfileImageTapped() {
+        navigationController?.pushViewController(ProfileController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+    }
 }

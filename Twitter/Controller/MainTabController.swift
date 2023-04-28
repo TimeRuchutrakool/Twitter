@@ -58,7 +58,8 @@ class MainTabController: UITabBarController {
     }
     
     func fetchUser(){
-        UserService.shared.fetchUser { user in
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        UserService.shared.fetchUser(uid: uid) { user in
             self.user = user
         }
     }
@@ -76,7 +77,7 @@ class MainTabController: UITabBarController {
     
     func configVC(){
         
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let feedNav = templateNavController(image: UIImage(named: "home_unselected"), rootViewController: feed)
         
         let explore = ExploreController()

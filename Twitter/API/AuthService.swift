@@ -27,9 +27,9 @@ struct AuthService{
         let fullname = credentials.fullname
         let username = credentials.username
         
-        guard let imageData = credentials.profileImage.jpegData(compressionQuality: 0.3) else {return}
+        guard let imageData = credentials.profileImage.jpegData(compressionQuality: 1) else {return}
         let filename = NSUUID().uuidString
-        let storageRef = STORAGE_PROFILE_IMAGES.child(filename)
+        let storageRef = STORAGE_PROFILE_IMAGES.child("\(filename)")
         
         
         storageRef.putData(imageData) { meta, error in

@@ -25,7 +25,6 @@ class CaptionTextView: UITextView {
         backgroundColor = .white
         font = UIFont.systemFont(ofSize: 16)
         isScrollEnabled = false
-        //heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         addSubview(placeholder)
         placeholder.anchor(top: topAnchor,left: leftAnchor,paddingTop: 8,paddingRight: 4)

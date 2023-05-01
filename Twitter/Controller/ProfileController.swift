@@ -14,8 +14,24 @@ private let headeridentifier = "ProfileHeader"
 class ProfileController: UICollectionViewController{
     
     //MARK: - Properties
+    private let user: User
+    
+    private var tweets = [Tweet]() {
+        didSet{
+            return collectionView.reloadData()
+        }
+    }
     
     //MARK: - Life Cycle
+    
+    init(user:User){
+        self.user = user
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -26,6 +42,15 @@ class ProfileController: UICollectionViewController{
         super.viewDidLoad()
         navigationController?.navigationBar.barStyle = .black
         configureCollectionView()
+        fetchTweets()
+    }
+    
+    //MARK: - API
+    
+    func fetchTweets(){
+        TweetService.shared.fetchTweet(forUser: user) { tweets in
+            self.tweets = tweets
+        }
     }
     
     //MARK: - Functions
@@ -39,12 +64,12 @@ class ProfileController: UICollectionViewController{
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseidentifier, for: indexPath) as! TweetCell
-        
+        cell.tweet = tweets[indexPath.row]
         return cell
     }
 }
@@ -53,6 +78,8 @@ extension ProfileController{
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headeridentifier, for: indexPath) as! ProfileHeader
+        header.user = user
+        header.delegate = self
         return header
     }
     
@@ -62,11 +89,17 @@ extension ProfileController{
 extension ProfileController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 350)
+        return CGSize(width: view.frame.width, height: 360)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 100)
     }
     
+}
+
+extension ProfileController: ProfileHeaderDelegate{
+    func profiledissmiss() {
+        navigationController?.popViewController(animated: true)
+    }
 }

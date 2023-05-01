@@ -10,6 +10,13 @@ import UIKit
 class ProfileFilterCell: UICollectionViewCell{
     
     //MARK: -  Properties
+
+    
+    var option: ProfileFilterOptions! {
+        didSet{
+            titleLabel.text = option.descriptions
+        }
+    }
     
     private let titleLabel:UILabel = {
        let label = UILabel()
@@ -38,5 +45,9 @@ class ProfileFilterCell: UICollectionViewCell{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - Function
+    
+
     
 }

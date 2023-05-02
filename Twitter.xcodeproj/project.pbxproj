@@ -44,6 +44,9 @@
 		F40C437E29FC262800296861 /* ProfileFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C437D29FC262800296861 /* ProfileFilterCell.swift */; };
 		F40C438029FCE4C100296861 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C437F29FCE4C100296861 /* ProfileHeaderViewModel.swift */; };
 		F40C438229FD05AE00296861 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C438129FD05AE00296861 /* UserCell.swift */; };
+		F40C43842A00D74B00296861 /* TweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C43832A00D74B00296861 /* TweetController.swift */; };
+		F40C43862A00D8C100296861 /* TweetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C43852A00D8C100296861 /* TweetHeader.swift */; };
+		F40C43882A00F55000296861 /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C43872A00F55000296861 /* UploadTweetViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,9 @@
 		F40C437D29FC262800296861 /* ProfileFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterCell.swift; sourceTree = "<group>"; };
 		F40C437F29FCE4C100296861 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
 		F40C438129FD05AE00296861 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		F40C43832A00D74B00296861 /* TweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetController.swift; sourceTree = "<group>"; };
+		F40C43852A00D8C100296861 /* TweetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetHeader.swift; sourceTree = "<group>"; };
+		F40C43872A00F55000296861 /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +163,7 @@
 				F40C434929F9049000296861 /* ConversationController.swift */,
 				F40C436B29FB6E7400296861 /* UploadTweetController.swift */,
 				F40C437729FC16C300296861 /* ProfileController.swift */,
+				F40C43832A00D74B00296861 /* TweetController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -166,6 +173,7 @@
 			children = (
 				F40C437529FBA9FC00296861 /* TweetViewModel.swift */,
 				F40C437F29FCE4C100296861 /* ProfileHeaderViewModel.swift */,
+				F40C43872A00F55000296861 /* UploadTweetViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -179,6 +187,7 @@
 				F40C437B29FC245E00296861 /* ProfileFilterView.swift */,
 				F40C437D29FC262800296861 /* ProfileFilterCell.swift */,
 				F40C438129FD05AE00296861 /* UserCell.swift */,
+				F40C43852A00D8C100296861 /* TweetHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -317,6 +326,7 @@
 				F40C437C29FC245E00296861 /* ProfileFilterView.swift in Sources */,
 				F40C436E29FB7A5200296861 /* CaptionTextView.swift in Sources */,
 				F40C432A29F901D100296861 /* SceneDelegate.swift in Sources */,
+				F40C43882A00F55000296861 /* UploadTweetViewModel.swift in Sources */,
 				F40C435429F9182500296861 /* RegisterController.swift in Sources */,
 				F40C438229FD05AE00296861 /* UserCell.swift in Sources */,
 				F40C437429FB9D5600296861 /* TweetCell.swift in Sources */,
@@ -325,12 +335,14 @@
 				F40C437A29FC1CEF00296861 /* ProfileHeader.swift in Sources */,
 				F40C436329FA5ED300296861 /* AuthService.swift in Sources */,
 				F40C437629FBA9FC00296861 /* TweetViewModel.swift in Sources */,
+				F40C43862A00D8C100296861 /* TweetHeader.swift in Sources */,
 				F40C434629F9044300296861 /* ExploreController.swift in Sources */,
 				F40C437E29FC262800296861 /* ProfileFilterCell.swift in Sources */,
 				F40C438029FCE4C100296861 /* ProfileHeaderViewModel.swift in Sources */,
 				F40C434F29F915E100296861 /* UIColor+Extension.swift in Sources */,
 				F40C437029FB7F8E00296861 /* TweetService.swift in Sources */,
 				F40C437829FC16C300296861 /* ProfileController.swift in Sources */,
+				F40C43842A00D74B00296861 /* TweetController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,12 @@ class ExploreController: UITableViewController{
         configureSearchController()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     //MARK: - Functions
     
     func configureUI(){
@@ -76,6 +82,11 @@ extension ExploreController{
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseidentifier,for: indexPath) as! UserCell
         cell.user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
         return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+        let controller = ProfileController(user: user)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 

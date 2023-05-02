@@ -88,12 +88,20 @@ extension FeedController{
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = TweetController(tweet: tweets[indexPath.row])
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 extension FeedController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+        let tweet = tweets[indexPath.row]
+        let vm = TweetViewModel(tweet: tweet)
+        let height = vm.size(forWidth: view.frame.width).height
+        return CGSize(width: view.frame.width, height: height+80)
     }
     
 }
@@ -105,5 +113,12 @@ extension FeedController: TweetCellDelegate{
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    func handleReplyTapped(_ cell: TweetCell) {
+        guard let tweet = cell.tweet else {return}
+        let controller = UploadTweetController(user: tweet.user, config: .reply(tweet))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
+    }
  
 }

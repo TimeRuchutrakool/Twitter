@@ -14,7 +14,7 @@ private let headeridentifier = "ProfileHeader"
 class ProfileController: UICollectionViewController{
     
     //MARK: - Properties
-    private let user: User
+    private var user: User
     
     private var tweets = [Tweet]() {
         didSet{
@@ -43,6 +43,8 @@ class ProfileController: UICollectionViewController{
         navigationController?.navigationBar.barStyle = .black
         configureCollectionView()
         fetchTweets()
+        checkIfUserFollow()
+        fetchUserStat()
     }
     
     //MARK: - API
@@ -50,6 +52,21 @@ class ProfileController: UICollectionViewController{
     func fetchTweets(){
         TweetService.shared.fetchTweet(forUser: user) { tweets in
             self.tweets = tweets
+        }
+    }
+    
+    func checkIfUserFollow(){
+        UserService.shared.checkIfUserIsFollowed(uid: user.uid) { isFollowed in
+            self.user.isFollow = isFollowed
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStat(){
+        UserService.shared.fetchUserStats(uid: user.uid) { stats in
+            self.user.stats = stats
+            self.collectionView.reloadData()
+            
         }
     }
     
@@ -101,5 +118,26 @@ extension ProfileController: UICollectionViewDelegateFlowLayout{
 extension ProfileController: ProfileHeaderDelegate{
     func profiledissmiss() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    func handleEditProfileFollow(_ header: ProfileHeader) {
+        
+        if user.isCurrentUser{
+            return
+        }
+        else{
+            if user.isFollow{
+                UserService.shared.unfollowUser(uid: user.uid) { Error, ref in
+                    self.user.isFollow = false
+                    self.collectionView.reloadData()
+                }
+            }
+            else{
+                UserService.shared.followUser(uid: user.uid) { error, ref in
+                    self.user.isFollow = true
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 }

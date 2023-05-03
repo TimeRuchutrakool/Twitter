@@ -40,9 +40,28 @@ class FeedController: UICollectionViewController{
     }
     
     //MARK: - API
+    
     func fetchTweets(){
+        collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweet { tweets in
-            self.tweets = tweets
+           
+            self.tweets = tweets.sorted(by: {$0.timeStamp > $1.timeStamp})
+            self.checkIfUserLikedTweets()
+            
+            
+            self.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+    
+    func checkIfUserLikedTweets() {
+        self.tweets.forEach { tweet in
+            TweetService.shared.checkIfUserLikeTweet(tweet) { didLike in
+                guard didLike == true else {return}
+                
+                if let index = self.tweets.firstIndex(where: {$0.tweetID == tweet.tweetID}){
+                    self.tweets[index].didLike = true
+                }
+            }
         }
     }
     
@@ -58,6 +77,14 @@ class FeedController: UICollectionViewController{
         
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = .white
+        
+        let refrshControl = UIRefreshControl()
+        refrshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refrshControl
+    }
+    
+    @objc func handleRefresh(){
+        fetchTweets()
     }
     
     func configureLeftBarButton(){
@@ -120,5 +147,21 @@ extension FeedController: TweetCellDelegate{
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
     }
+    func handleLikesTapped(_ cell: TweetCell) {
+        
+        guard let tweet = cell.tweet else {return}
+        TweetService.shared.likeTweet(tweet: tweet) { error, ref in
+            cell.tweet?.didLike.toggle()
+            let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+            cell.tweet?.likes = likes
+            
+            //only upload noti if tweet is being liked
+            guard !tweet.didLike else {return}
+            NotificationService.shared.uploadNotification(type: .like,tweet: tweet)
+        }
+        
+    }
+    
+    
  
 }

@@ -49,6 +49,24 @@ struct TweetViewModel{
         return attributedText(withValue: tweet.likes, text: " Likes")
     }
     
+    var likeButtonTineColor: UIColor{
+        return tweet.didLike ? .red : .lightGray
+    }
+    
+    var likeButtonImage: UIImage{
+        let imgName = tweet.didLike ? "like_filled" : "like"
+        return UIImage(named: imgName)!
+    }
+    
+    var shouldHideReplyLabel: Bool{
+        return !tweet.isReply
+    }
+    
+    var replyText: String?{
+        guard let replyToUsername = tweet.replyTo else {return nil}
+        return "replying to @\(replyToUsername)"
+    }
+    
     init(tweet: Tweet) {
         self.tweet = tweet
         self.user = tweet.user

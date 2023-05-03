@@ -14,6 +14,7 @@ enum UploadTweetConfiguration{
 
 
 struct UploadTweetViewModel{
+    
     let actionButttonTitle: String
     let placeHolderText: String
     var shouldShowReplyLabel: Bool

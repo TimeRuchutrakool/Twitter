@@ -10,6 +10,7 @@ import UIKit
 protocol TweetCellDelegate: AnyObject{
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTapped(_ cell:TweetCell)
+    func handleLikesTapped(_ cell: TweetCell)
 }
 
 class TweetCell : UICollectionViewCell{
@@ -87,6 +88,13 @@ class TweetCell : UICollectionViewCell{
         return button
     }()
     
+    private let replyLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
     //MARK: - Life Cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -102,15 +110,27 @@ class TweetCell : UICollectionViewCell{
     
     func layout(){
         backgroundColor = .white
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor,left: leftAnchor,paddingTop: 16,paddingLeft: 8)
         
-        let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
+        
+        
+        let captionStack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
+        captionStack.axis = .vertical
+        captionStack.distribution = .fillProportionally
+        captionStack.spacing = 4
+        
+        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView,captionStack])
+        imageCaptionStack.distribution = .fillProportionally
+        imageCaptionStack.spacing = 12
+        imageCaptionStack.alignment = .leading
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
         stack.axis = .vertical
+        stack.spacing = 8
         stack.distribution = .fillProportionally
-        stack.spacing = 4
+        
         addSubview(stack)
-        stack.anchor(top: profileImageView.topAnchor,left: profileImageView.rightAnchor,right: rightAnchor,paddingLeft: 12,paddingRight: 12)
+        stack.anchor(top: topAnchor,left: leftAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 12,paddingRight: 12)
+        replyLabel.isHidden = true
         
         let underLine = UIView()
         addSubview(underLine)
@@ -135,6 +155,10 @@ class TweetCell : UICollectionViewCell{
         
         profileImageView.sd_setImage(with: viewModel.profileImageURL)
         infoLabel.attributedText = viewModel.userInfoText
+        likeButton.tintColor = viewModel.likeButtonTineColor
+        likeButton.setImage(viewModel.likeButtonImage, for: .normal)
+        replyLabel.isHidden = viewModel.shouldHideReplyLabel
+        replyLabel.text = viewModel.replyText
     }
     
     @objc func handleCommentTapped(){
@@ -146,7 +170,7 @@ class TweetCell : UICollectionViewCell{
     }
     
     @objc func handleLikeTapped(){
-        
+        delegate?.handleLikesTapped(self)
     }
     
     @objc func handleShareTapped(){

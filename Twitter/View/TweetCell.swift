@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol TweetCellDelegate: AnyObject{
     func handleProfileImageTapped(_ cell: TweetCell)
     func handleReplyTapped(_ cell:TweetCell)
     func handleLikesTapped(_ cell: TweetCell)
+    func handleFetchUser(withUsername username: String)
 }
 
 class TweetCell : UICollectionViewCell{
@@ -47,11 +49,13 @@ class TweetCell : UICollectionViewCell{
         return label
     }()
     
-    private let captionLabel: UILabel = {
-        let label = UILabel()
+    private let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
-        label.text = "Hello Twitter"
+        label.hashtagColor = .twitterBlue
+        label.mentionColor = .twitterBlue
+        
         return label
     }()
     
@@ -88,10 +92,11 @@ class TweetCell : UICollectionViewCell{
         return button
     }()
     
-    private let replyLabel: UILabel = {
-       let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+       let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
+        label.mentionColor = .twitterBlue
         return label
     }()
     
@@ -100,6 +105,7 @@ class TweetCell : UICollectionViewCell{
         super.init(frame: frame)
         
         layout()
+        configMentionHandle()
     }
     
     required init?(coder: NSCoder) {
@@ -145,6 +151,7 @@ class TweetCell : UICollectionViewCell{
         addSubview(actionStack)
         actionStack.centerX(inView: self)
         actionStack.anchor(bottom: bottomAnchor,paddingBottom: 8)
+        
     }
     
     func configure(){
@@ -179,5 +186,11 @@ class TweetCell : UICollectionViewCell{
     
     @objc func handleProfileImageTapped(){
         delegate?.handleProfileImageTapped(self)
+    }
+    
+    func configMentionHandle(){
+        captionLabel.handleMentionTap { mention in
+            self.delegate?.handleFetchUser(withUsername: mention)
+        }
     }
 }

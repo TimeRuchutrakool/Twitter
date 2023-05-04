@@ -9,12 +9,12 @@ import UIKit
 
 private let reuseIdentifier = "NotificationCell"
 
-class NotificationController: UITableViewController{
+class NotificationController: UICollectionViewController{
     
     //MARK: - Properties
     private var notifications = [Notification](){
         didSet{
-            tableView.reloadData()
+            collectionView.reloadData()
         }
     }
     
@@ -32,16 +32,17 @@ class NotificationController: UITableViewController{
         super.viewDidLoad()
         
         configureUI()
-       fetchNotifications()
+        fetchNotifications()
     }
     
     //MARK: - API
    
     
     func fetchNotifications(){
-        refreshControl?.beginRefreshing()
+        collectionView.refreshControl?.beginRefreshing()
         NotificationService.shared.fetchNotifications { notifications in
-            self.refreshControl?.endRefreshing()
+           
+            self.collectionView.refreshControl?.endRefreshing()
             self.notifications = notifications
             
             self.checkIfUserIsFollowed(notifications)
@@ -57,6 +58,7 @@ class NotificationController: UITableViewController{
                     self.notifications[index].user.isFollow = isFollowed
                 }
             }
+            
         }
     }
     
@@ -66,12 +68,13 @@ class NotificationController: UITableViewController{
         view.backgroundColor = .white
         navigationItem.title = "Notification"
         
-        tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 60
-        tableView.separatorStyle = .none
+        collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.backgroundColor = .white
+        //collectionView.rowHeight = 60
+       
         
         let refreshControl = UIRefreshControl()
-        tableView.refreshControl = refreshControl
+        collectionView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
     
@@ -83,25 +86,53 @@ class NotificationController: UITableViewController{
 }
 
 extension NotificationController{
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return notifications.count
+//    }
+//
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
+//        cell.notification = notifications[indexPath.row]
+//        cell.delegate = self
+//        return cell
+//    }
+//
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let notification = notifications[indexPath.row]
+//        guard let tweetID = notification.tweetID else {return}
+//        TweetService.shared.fetchTweet(withTweetID: tweetID) { tweet in
+//            let controller = TweetController(tweet: tweet)
+//            self.navigationController?.pushViewController(controller, animated: true)
+//        }
+//        //tableView.deselectRow(at: indexPath, animated: true)
+//    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return notifications.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
         cell.notification = notifications[indexPath.row]
         cell.delegate = self
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let notification = notifications[indexPath.row]
         guard let tweetID = notification.tweetID else {return}
         TweetService.shared.fetchTweet(withTweetID: tweetID) { tweet in
             let controller = TweetController(tweet: tweet)
             self.navigationController?.pushViewController(controller, animated: true)
         }
-        //tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+}
+
+extension NotificationController: UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 60)
     }
     
 }

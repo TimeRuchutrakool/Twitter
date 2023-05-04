@@ -12,13 +12,15 @@ struct User{
     
     let uid:String
     let email:String
-    let fullname: String
-    let username: String
+    var fullname: String
+    var username: String
     var profileImageURL: URL!
     
     var isCurrentUser: Bool {return Auth.auth().currentUser?.uid == uid}
     var isFollow = false
     var stats: UserRelationStats?
+    
+    var bio: String?
     
     init(uid:String,dict:[String:AnyObject]) {
         self.uid = uid
@@ -28,6 +30,7 @@ struct User{
         if let profileImageURL = dict["profileImageUrl"] as? String{
             self.profileImageURL =  URL(string: profileImageURL)
         }
+        self.bio = dict["bio"] as? String ?? ""
     }
     
 }

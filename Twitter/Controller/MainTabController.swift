@@ -83,7 +83,7 @@ class MainTabController: UITabBarController {
         let explore = ExploreController()
         let exploreNav = templateNavController(image: UIImage(named: "search_unselected"), rootViewController: explore)
         
-        let noti = NotificationController()
+        let noti = NotificationController(collectionViewLayout: UICollectionViewLayout())
         let notiNav = templateNavController(image: UIImage(named: "like_unselected"), rootViewController: noti)
         
         let conver = ConversationController()

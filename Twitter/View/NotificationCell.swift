@@ -12,7 +12,7 @@ protocol NotificationCellDelegate: AnyObject{
     func didTappedFollow(_ cell: NotificationCell)
 }
 
-class NotificationCell: UITableViewCell{
+class NotificationCell: UICollectionViewCell{
     
     //MARK: - Properties
     weak var delegate: NotificationCellDelegate?
@@ -58,9 +58,28 @@ class NotificationCell: UITableViewCell{
     }()
     
     //MARK: - Life Cycle
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func handleProfileImageTapped(){
+        delegate?.didTapProfile(self)
+        print("Debug -> tapped profile")
+    }
+    
+    @objc func handleFollowTapped(){
         
+            delegate?.didTappedFollow(self)
+        
+    }
+    
+    func layout(){
         let stack = UIStackView(arrangedSubviews: [profileImageView,notificationLabel])
         stack.axis = .horizontal
         stack.spacing = 12
@@ -74,19 +93,7 @@ class NotificationCell: UITableViewCell{
         followButton.setDimensions(width: 88, height: 32)
         followButton.layer.cornerRadius = 32/2
         followButton.anchor(right: rightAnchor,paddingRight: 12)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc func handleProfileImageTapped(){
-        delegate?.didTapProfile(self)
-        print("Debug -> tapped profile")
-    }
-    
-    @objc func handleFollowTapped(){
-        delegate?.didTappedFollow(self)
+        
     }
     
     func configure(){

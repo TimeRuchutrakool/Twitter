@@ -20,6 +20,10 @@ struct NotificationService{
             "uid": uid,
             "type": type.rawValue
         ]
+        if type == .mention{
+            guard let tweetID = tweet?.tweetID else {return}
+            values["tweetID"] = tweetID
+        }
         
         if let tweet = tweet{
             values["tweetID"] = tweet.tweetID

@@ -15,7 +15,7 @@
 		F40C433429F901D200296861 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F40C433229F901D200296861 /* LaunchScreen.storyboard */; };
 		F40C434229F902D900296861 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434129F902D900296861 /* MainTabController.swift */; };
 		F40C434429F9041400296861 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434329F9041400296861 /* FeedController.swift */; };
-		F40C434629F9044300296861 /* ExploreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434529F9044300296861 /* ExploreController.swift */; };
+		F40C434629F9044300296861 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434529F9044300296861 /* SearchController.swift */; };
 		F40C434829F9046C00296861 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434729F9046C00296861 /* NotificationController.swift */; };
 		F40C434A29F9049000296861 /* ConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434929F9049000296861 /* ConversationController.swift */; };
 		F40C434D29F9139C00296861 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40C434C29F9139C00296861 /* UIView+Extension.swift */; };
@@ -75,7 +75,7 @@
 		F40C433529F901D200296861 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F40C434129F902D900296861 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		F40C434329F9041400296861 /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
-		F40C434529F9044300296861 /* ExploreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreController.swift; sourceTree = "<group>"; };
+		F40C434529F9044300296861 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		F40C434729F9046C00296861 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		F40C434929F9049000296861 /* ConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationController.swift; sourceTree = "<group>"; };
 		F40C434C29F9139C00296861 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 				F40C435029F917A600296861 /* Authentication */,
 				F40C434129F902D900296861 /* MainTabController.swift */,
 				F40C434329F9041400296861 /* FeedController.swift */,
-				F40C434529F9044300296861 /* ExploreController.swift */,
+				F40C434529F9044300296861 /* SearchController.swift */,
 				F40C434729F9046C00296861 /* NotificationController.swift */,
 				F40C434929F9049000296861 /* ConversationController.swift */,
 				F40C436B29FB6E7400296861 /* UploadTweetController.swift */,
@@ -291,7 +291,6 @@
 				5B9C52A280AF5E54C2F7A478 /* Pods-Twitter.debug.xcconfig */,
 				D68EE36603ADD8D9E05738BD /* Pods-Twitter.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -349,7 +348,7 @@
 			mainGroup = F40C431B29F901D100296861;
 			packageReferences = (
 				F40C435929FA525500296861 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage.git" */,
+				F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = F40C432529F901D100296861 /* Products */;
 			projectDirPath = "";
@@ -457,7 +456,7 @@
 				F40C438E2A01771400296861 /* ActionSheetViewModel.swift in Sources */,
 				F40C437629FBA9FC00296861 /* TweetViewModel.swift in Sources */,
 				F40C43862A00D8C100296861 /* TweetHeader.swift in Sources */,
-				F40C434629F9044300296861 /* ExploreController.swift in Sources */,
+				F40C434629F9044300296861 /* SearchController.swift in Sources */,
 				F40C437E29FC262800296861 /* ProfileFilterCell.swift in Sources */,
 				F40C438029FCE4C100296861 /* ProfileHeaderViewModel.swift in Sources */,
 				F40C434F29F915E100296861 /* UIColor+Extension.swift in Sources */,
@@ -699,7 +698,7 @@
 				minimumVersion = 10.0.0;
 			};
 		};
-		F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage.git" */ = {
+		F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
@@ -727,7 +726,7 @@
 		};
 		F40C436929FAC6F200296861 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage.git" */;
+			package = F40C436829FAC6F200296861 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
 		};
 /* End XCSwiftPackageProductDependency section */
